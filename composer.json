@@ -2,7 +2,7 @@
     "name": "anovanmaximuz/laravel-validation",
     "description": "validasi request",
     "type": "library",
-    "license": "free",
+    "license": "MIT",
     "homepage": "https://github.com/anovanmaximuz/LaravelValidation",
     "autoload": {
         "psr-4": {
