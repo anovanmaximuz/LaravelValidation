@@ -3,6 +3,7 @@
     "description": "validasi request",
     "type": "library",
     "license": "free",
+    "homepage": "https://github.com/anovanmaximuz/LaravelValidation",
     "autoload": {
         "psr-4": {
             "Anovanmaximuz\\LaravelValidation\\": "src/"
