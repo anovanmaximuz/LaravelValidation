@@ -1,18 +1,11 @@
 <?php 
 namespace Anovanmaximuz\LaravelValidation;
 
-class Validation{
+use Exception;
 
-    protected $headers;
-    private function getHeaders($request, $arrays=[]) {
-        $headerRequests = [];
-        foreach($request->header() as $data => $val){
-            $headerRequests[$data] = $val[0];
-        }
-        return $headerRequests;
-    }
-    
-    public static function validateHeaders($headers, $headerRoles=[], $onlyOne=true) {
+class Validation extends Exception{
+
+    public static function validateHeaders($headers, $headerRoles=[]) {
 
         $errors = [];
         $row = 0;
@@ -63,7 +56,7 @@ class Validation{
                 }
             }
 
-            return $exceptions;
+            throw new Exception($exceptions[0]);
         }else{
             return true;
         }
