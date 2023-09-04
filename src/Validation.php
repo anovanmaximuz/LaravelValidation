@@ -1,6 +1,6 @@
 <?php 
 namespace Anovanmaximuz\LaravelValidation;
-
+use Illuminate\Validation\ValidationException;
 class Validation{
     private function getHeaders($request, $arrays=[]) {
         $headerRequests = [];
@@ -51,7 +51,8 @@ class Validation{
             $row++;
         }
         if(count($errors)>0){
-            return ($onlyOne) ? $errors[0][0]:$errors;
+            throw ValidationException::withMessages($errors);
+           // return ($onlyOne) ? $errors[0][0]:$errors;
         }else{
             return true;
         }
