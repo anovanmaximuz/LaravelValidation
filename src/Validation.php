@@ -1,6 +1,5 @@
 <?php 
 namespace Anovanmaximuz\LaravelValidation;
-use Illuminate\Validation\ValidationException as ValidationException;
 
 class Validation{
 
@@ -13,7 +12,7 @@ class Validation{
         return $headerRequests;
     }
     
-    public function validateHeaders($headers, $headerRoles=[], $onlyOne=true) {
+    public static function validateHeaders($headers, $headerRoles=[], $onlyOne=true) {
 
         $errors = [];
         $row = 0;
@@ -64,15 +63,25 @@ class Validation{
                 }
             }
 
-            $error = ValidationException::withMessages([
-                'field_name_1' => ['Validation Message #1'],
-                'field_name_2' => ['Validation Message #2'],
-             ]);
-            throw $error;
-         //   throw ValidationException::withMessages($exceptions);
-           // return ($onlyOne) ? $errors[0][0]:$errors;
+            throw new validationHeaderException($exceptions[0]);
         }else{
             return true;
         }
+    }
+}
+
+class validationHeaderException extends Exception {
+    
+    /**
+     * Construct the exception. Note: The message is NOT binary safe.
+     * @link https://php.net/manual/en/exception.construct.php
+     * @param string $message [optional] The Exception message to throw.
+     * @param Throwable|null $previous [optional] The previous throwable used for the exception chaining.
+     * @param int $code [optional] The Exception code.
+     */
+    public function __construct(string $message = '', int $code = 422) {
+        parent::__construct($message, $code);
+        $this->message = "$message";
+        $this->code = $code;
     }
 }
