@@ -1,6 +1,6 @@
 {
     "name": "anovanmaximuz/laravel-validation",
-    "description": "validasi request",
+    "description": "validasi request for laravel",
     "type": "library",
     "license": "MIT",
     "homepage": "https://github.com/anovanmaximuz/LaravelValidation",
@@ -16,5 +16,7 @@
         }
     ],
     "minimum-stability": "stable",
-    "require": {}
+    "require": {
+        "php": "^7.3|^8.0"
+    }
 }
