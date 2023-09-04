@@ -60,7 +60,7 @@ class Validation{
             $exceptions = [];
             foreach($errors as $error){
                 foreach($error as $logs){
-                    $$exceptions[] = $logs;
+                    $exceptions[] = $logs;
                 }
             }
 
