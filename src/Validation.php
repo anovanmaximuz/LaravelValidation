@@ -56,9 +56,9 @@ class Validation extends Exception{
                 }
             }
 
-            throw new Exception($exceptions[0]);
+            return ['code'=>203, 'messages'=>$exceptions];
         }else{
-            return true;
+            return ['code'=>200];
         }
     }
 }
