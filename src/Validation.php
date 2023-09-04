@@ -58,15 +58,18 @@ class Validation{
 
         if(count($errors)>0){
             $exceptions = [];
-            $row=0;
             foreach($errors as $error){
                 foreach($error as $logs){
-                    $exceptions["notes_".$row] = $logs;
-                    $row++;
+                    $exceptions[] = $logs;
                 }
             }
 
-            throw ValidationException::withMessages($exceptions);
+            $error = ValidationException::withMessages([
+                'field_name_1' => ['Validation Message #1'],
+                'field_name_2' => ['Validation Message #2'],
+             ]);
+            throw $error;
+         //   throw ValidationException::withMessages($exceptions);
            // return ($onlyOne) ? $errors[0][0]:$errors;
         }else{
             return true;
