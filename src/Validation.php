@@ -22,22 +22,22 @@ class Validation extends Exception{
                         if(count($mins)>0 && count($mins)==2){
                             $minValue = $mins[1];
                             if(strlen($headers[$header])<$minValue){
-                                $errors[$row][] = "Minimum length ".$minValue." allowed";
+                                $errors[$row][] = "Minimum ".$minValue." characters allowed for header '".$header."' ";
                             }
                         }else{
-                            $errors[$row][] = "Wrong minimum length format";
+                            $errors[$row][] = "Wrong minimum length format for header '".$header."', eq: min:5 ";
                         }
                     }
                     
                     if (strpos($rol, "max") !== false){
                         $maxs = explode(":", $rol);
-                        if(count($maxs)>0 && count($mins)==2){
+                        if(count($maxs)>0 && count($maxs)==2){
                             $maxValue = $maxs[1];
                             if(strlen($headers[$header])>$maxValue){
-                                $errors[$row][] = "Maximum length ".$maxValue." allowed";
+                                $errors[$row][] = "Maximum ".$maxValue." characters allowed for header '".$header."' ";
                             }
                         }else{
-                            $errors[$row][] = "Wrong maximum length format";
+                            $errors[$row][] = "Wrong maximum length format for header '".$header."', eq: max:5 ";
                         }
                     }
                 }
