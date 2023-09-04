@@ -58,9 +58,11 @@ class Validation{
 
         if(count($errors)>0){
             $exceptions = [];
+            $row=0;
             foreach($errors as $error){
                 foreach($error as $logs){
-                    $exceptions[] = $logs;
+                    $exceptions["notes_".$row] = $logs;
+                    $row++;
                 }
             }
 
