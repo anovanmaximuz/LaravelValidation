@@ -1,11 +1,11 @@
 <?php 
 namespace Anovanmaximuz\LaravelValidation;
 
-use Exception;
+use DateTime;
 
-class Validation extends Exception{
+class Validation{
 
-    public static function validateHeaders($headers, $headerRoles=[], $raw=false) {
+    public static function cheks($params, $paramsRoles=[], $model='header', $raw=false) {
         //raw
         //name 
         //   -required=false
@@ -13,31 +13,35 @@ class Validation extends Exception{
         //   -length=false
         $errors = [];
         $row = 0;
-        foreach ($headerRoles as $header => $role){
-            if (strpos($role, "required") !== false && !isset($headers[$header])) {
+        foreach ($paramsRoles as $param => $role){
+            $errors[$param]['required'] = true;
+            $errors[$param]['length'] = true;
+            $errors[$param]['type'] = true;
+            $errors[$param]['date'] = true;
+            if (strpos($role, "required") !== false && !isset($params[$param])) {
                 if($raw){
-                    $errors[$header]['required'] = false;
+                    $errors[$param]['required'] = false;
                 }else{
-                    $errors[$row][] = "Header ".$header." must be set";
+                    $errors[$row][] = $model." ".$param." must be set";
                 }
             }
             
-            if(isset($headers[$header])){
+            if(isset($params[$param])){
                 $roles = explode("|", $role);
                 foreach ($roles as $rol){
                     if (strpos($rol, "min") !== false){
                         $mins = explode(":", $rol);
                         if(count($mins)>0 && count($mins)==2){
                             $minValue = $mins[1];
-                            if(strlen($headers[$header])<$minValue){
+                            if(strlen($params[$header])<$minValue){
                                 if($raw){
-                                    $errors[$header]['length'] = false;
+                                    $errors[$param]['length'] = false;
                                 }else{
-                                    $errors[$row][] = "Minimum ".$minValue." characters allowed for header '".$header."' ";
+                                    $errors[$row][] = "Minimum ".$minValue." characters allowed for $model '".$param."' ";
                                 }
                             }
                         }else{
-                            $errors[$row][] = "Wrong minimum length format for header '".$header."', eq: min:5 ";
+                            $errors[$row][] = "Wrong minimum length format for $model '".$param."', eq: min:5 ";
                         }
                     }
                     
@@ -45,30 +49,50 @@ class Validation extends Exception{
                         $maxs = explode(":", $rol);
                         if(count($maxs)>0 && count($maxs)==2){
                             $maxValue = $maxs[1];
-                            if(strlen($headers[$header])>$maxValue){
+                            if(strlen($params[$param])>$maxValue){
                                 if($raw){
-                                    $errors[$header]['length'] = false;
+                                    $errors[$param]['length'] = false;
                                 }else{
-                                    $errors[$row][] = "Maximum ".$maxValue." characters allowed for header '".$header."' ";
+                                    $errors[$row][] = "Maximum ".$maxValue." characters allowed for $model '".$param."' ";
                                 }
                             }
                         }else{
-                            $errors[$row][] = "Wrong maximum length format for header '".$header."', eq: max:5 ";
+                            $errors[$row][] = "Wrong maximum length format for $model '".$param."', eq: max:5 ";
+                        }
+                    }
+                    
+                    if (strpos($rol, "date") !== false){
+                        if(!self::validateDate($params[$param])){
+                            if($raw){
+                                $errors[$param]['date'] = false;
+                            }else{
+                                $errors[$row][] = "Invalid date format for $model '".$param."' ";
+                            }
                         }
                     }
                 }
             }
             
             $row++;
+            if($errors[$param]['required'] == true && $errors[$param]['date'] == true &&
+            $errors[$param]['length'] == true &&
+            $errors[$param]['type'] == true){
+                unset($errors[$param]);
+            }
         }
-
+        
 
 
         if(count($errors)>0){
+            $data = [];
+            $exceptions = [];
+            $groups = [];
             if($raw){
-
-            }else{
-                $exceptions = [];
+                $data = $errors;
+                foreach ($errors as $error => $val){
+                    $groups[]=$error;
+                }
+            }else{                
                 foreach($errors as $error){
                     foreach($error as $logs){
                         $exceptions[] = $logs;
@@ -76,9 +100,15 @@ class Validation extends Exception{
                 }
             }
 
-            return ['code'=>203, 'messages'=>($raw) ? "errors":$exceptions,'data'=>$errors];
+            return ['code'=>203, 'messages'=>$exceptions,'data'=>$data,'group'=>$groups];
         }else{
             return ['code'=>200];
-        }
+        }        
+    }
+    
+    public static function validateDate($date, $format = 'Y-m-d')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
     }
 }
