@@ -17,7 +17,6 @@ class Validation{
             $errors[$param]['required'] = true;
             $errors[$param]['length'] = true;
             $errors[$param]['type'] = true;
-            $errors[$param]['date'] = true;
             if (strpos($role, "required") !== false && !isset($params[$param])) {
                 if($raw){
                     $errors[$param]['required'] = false;
@@ -64,9 +63,29 @@ class Validation{
                     if (strpos($rol, "date") !== false){
                         if(!self::validateDate($params[$param])){
                             if($raw){
-                                $errors[$param]['date'] = false;
+                                $errors[$param]['type'] = false;
                             }else{
                                 $errors[$row][] = "Invalid date format for $model '".$param."' ";
+                            }
+                        }
+                    }
+                    
+                    if (strpos($rol, "int") !== false){
+                        if(!is_numeric($params[$param])){
+                            if($raw){
+                                $errors[$param]['type'] = false;
+                            }else{
+                                $errors[$row][] = "Invalid int format for $model '".$param."' ";
+                            }
+                        }
+                    }
+                    
+                    if (strpos($rol, "string") !== false){
+                        if(!is_string($params[$param])){
+                            if($raw){
+                                $errors[$param]['type'] = false;
+                            }else{
+                                $errors[$row][] = "Invalid int format for $model '".$param."' ";
                             }
                         }
                     }
@@ -74,7 +93,7 @@ class Validation{
             }
             
             $row++;
-            if($errors[$param]['required'] == true && $errors[$param]['date'] == true &&
+            if($errors[$param]['required'] == true &&
             $errors[$param]['length'] == true &&
             $errors[$param]['type'] == true){
                 unset($errors[$param]);
