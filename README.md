@@ -16,7 +16,11 @@ composer require anovanmaximuz/laravel-validation
 As an example, here is how to require Laravel Validation on Laravel 8.x:
 
 ```bash
-$paramsChecks = $class->request($request, [
+
+use Anovanmaximuz\LaravelValidation as Validation;
+...
+
+$paramsChecks = new Validation\request($request, [
                 'partnerServiceId' => 'required|max:9|string',
                 'customerNo'=>'required|string|max:20',
                 'virtualAccountNo'=>'required|string|max:28',
