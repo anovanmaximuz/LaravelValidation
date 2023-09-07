@@ -13,5 +13,16 @@ composer require anovanmaximuz/laravel-validation
 ```
 
 
-As an example, here is how to require Collision on Laravel 8.x:
+As an example, here is how to require Laravel Validation on Laravel 8.x:
+
+```bash
+$paramsChecks = $class->request($request, [
+                'partnerServiceId' => 'required|max:9|string',
+                'customerNo'=>'required|string|max:20',
+                'virtualAccountNo'=>'required|string|max:28',
+                'trxDateInit'=>'required|date|max:25',
+                'channelCode'=>'required|int|max:4',
+                'inquiryRequestId'=>'required|string|max:128'
+            ],'parameter', true);
+```
 
