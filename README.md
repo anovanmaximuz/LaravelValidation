@@ -26,3 +26,6 @@ $paramsChecks = $class->request($request, [
             ],'parameter', true);
 ```
 
+## Support Validations
+* Request parameter validation POST, GET
+* Header validation
