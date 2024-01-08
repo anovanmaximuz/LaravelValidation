@@ -5,7 +5,7 @@ use DateTime;
 
 class Validation{
 
-    public static function cheks($params, $paramsRoles=[], $model='header', $raw=false) {
+    public static function request($params, $paramsRoles=[], $model='header', $raw=false) {
         //raw
         //name 
         //   -required=false
